@@ -1,0 +1,60 @@
+name : Build and test
+
+on : [push , pull_request]
+
+jobs:
+    build-and-test:
+        strategy:
+            matrix:
+                os : [ubuntu-latest , windows-latest]
+        runs-on : ${{matrix.os}}
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Install Qt
+              uses: jurplel/install-qt-action@v4
+              with: 
+                    version: '6.7.0'
+
+            - name: Configure
+              run: cmake --preset debug 
+
+            - name: BUild
+              run: cmake --build --preset debug 
+
+            - name: Run unit tests
+              run: ctest --preset debug --output-on-failure -L unit
+
+            - name: Run integration tests
+              run: ctest --preset debug --output-on-failure -L integration
+
+    sanitize:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: jurplel/install-qt-action@v4
+            - name: Configure and build with sanitize
+              run: |
+                cmake --preset sanitize
+                cmake --build --preset sanitize
+
+            - name: run tests under sanitizer
+              run: ctest --preset sanitize --output-on-failure
+
+    coverage:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v4
+        - uses: jurplel/install-qt-action@v4
+        - name: BUild with coverage instrumentation
+          run: |
+            cmake --preset debug --DCMAKE_CXX_FLAGS="--coverage"
+            cmake --build --preset debug
+        - name: Run tests
+          run: ctest --preset debug
+        - name: Generate coverage report
+          run: |
+            lcov --capture --directory . --output-file coverage.info
+            lcov --list coverage.info
+
+

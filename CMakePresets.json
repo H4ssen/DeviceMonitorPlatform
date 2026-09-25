@@ -1,0 +1,78 @@
+{
+    "version": 6,
+    "configurePresets": [
+        {
+            "name": "release",
+            "binaryDir": "${sourceDir}/build/release",
+            "cacheVariables": {"CMAKE_BUILD_TYPE": "Release"}
+        },
+
+        {
+            "name": "debug",
+            "binaryDir": "${sourceDir}/build/debug",
+            "cacheVariables": {"CMAKE_BUILD_TYPE":"Debug"}
+        },
+
+        {
+            "name": "sanitize",
+            "binaryDir": "${sourceDir}/build/sanitize",
+            "cacheVariables": {
+                "CMAKE_CXX_FLAGS" : "-fsanitize=address,undefined -g",
+                "CMAKE_EXE_LINKER_FLAGS" : "-fsanitize=address ,undefined"
+            }
+        }
+    ]
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
