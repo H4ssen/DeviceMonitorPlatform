@@ -2,12 +2,15 @@
 #include "transportConfig.h"
 #include "tcpTransport.h"
 #include <QTcpServer>
+#include <QNetworkProxy>
+#include <QNetworkProxyFactory>
 
 class TCPTransportIntegrationTest : public QObject {
 
     Q_OBJECT
 
     private slots:
+        void initTestCase();
         void failsForInvalidHost();
         void successfulConnection();
 
@@ -46,6 +49,12 @@ TCPTransportIntegrationTest::successfulConnection() {
     //assert
     QVERIFY(tcp.connect());
 
+}
+
+void TCPTransportIntegrationTest::initTestCase()
+{
+    QNetworkProxyFactory::setUseSystemConfiguration(false);
+    QNetworkProxy::setApplicationProxy(QNetworkProxy::NoProxy);
 }
 
 QTEST_MAIN(TCPTransportIntegrationTest);
