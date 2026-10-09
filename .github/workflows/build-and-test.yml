@@ -36,7 +36,14 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
-            - uses: jurplel/install-qt-action@v4
+            - name: Install Qt
+              uses: jurplel/install-qt-action@v4
+              with: 
+                    version: '6.4.2'
+                    host: linux
+                    target: desktop
+                    arch: gcc_64
+                    modules: 'qtserialport qtserialbus'
             - name: Configure and build with sanitize
               run: |
                 cmake --preset sanitize
@@ -52,7 +59,14 @@ jobs:
       runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@v4
-        - uses: jurplel/install-qt-action@v4
+        - name: Install Qt
+          uses: jurplel/install-qt-action@v4
+          with: 
+                version: '6.4.2'
+                host: linux
+                target: desktop
+                arch: gcc_64
+                modules: 'qtserialport qtserialbus'
         - name: BUild with coverage instrumentation
           run: |
             cmake --preset debug --DCMAKE_CXX_FLAGS="--coverage"
