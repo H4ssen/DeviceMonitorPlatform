@@ -2,7 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QVBoxLayout>
 #include <QPushButton>
-
+#include <QString>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)

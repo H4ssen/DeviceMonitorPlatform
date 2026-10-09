@@ -2,8 +2,35 @@
 #include <cstdint>
 #include <string>
 
-class TransportConfig {
+enum class Parity {
+    None,
+    Even,
+    Odd
+};
 
+enum class StopBits {
+    One,
+    Two
+};
+
+
+struct TransportConfig {
+    struct serial {
+        std::string port;
+        int baudRate{115200};
+        int dataBits{8};
+        Parity parity{Parity::None};
+        StopBits stopBits{StopBits::One};
+    };
+
+    struct tcp {
+        std::string host;
+        int port;
+    };
+
+    serial serial;
+    tcp tcp;
+    
 };
 
 class SerialConfig {

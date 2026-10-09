@@ -19,14 +19,14 @@ jobs:
             - name: Configure
               run: cmake --preset debug 
 
-            - name: BUild
+            - name: Build
               run: cmake --build --preset debug 
 
-            - name: Run unit tests
-              run: ctest --preset debug --output-on-failure -L unit
+            #- name: Run unit tests
+            #  run: ctest --preset debug --output-on-failure -L unit
 
             - name: Run integration tests
-              run: ctest --preset debug --output-on-failure -L integration
+              run: ctest --preset debug --output-on-failure -L integration --verbose
 
     sanitize:
         runs-on: ubuntu-latest
@@ -39,7 +39,7 @@ jobs:
                 cmake --build --preset sanitize
 
             - name: run tests under sanitizer
-              run: ctest --preset sanitize --output-on-failure
+              run: ctest --preset sanitize --output-on-failure --verbose
 
     coverage:
       runs-on: ubuntu-latest
@@ -51,10 +51,11 @@ jobs:
             cmake --preset debug --DCMAKE_CXX_FLAGS="--coverage"
             cmake --build --preset debug
         - name: Run tests
-          run: ctest --preset debug
+          run: ctest --preset debug --verbose
         - name: Generate coverage report
           run: |
             lcov --capture --directory . --output-file coverage.info
-            lcov --list coverage.info
+            lcov --extract coverage.info '*/src/*' '*/utils/*' --output-file coverage-filtered.info
+            lcov --list coverage-filtered.info
 
 
